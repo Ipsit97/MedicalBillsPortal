@@ -8,7 +8,7 @@
     height: 30px;
   }
 
-.d-flex.justify-content-center {
+.d-flex.justify-content-center.custom-box {
     max-width: 50%;
     margin: 0 auto; 
     border: 3px solid #7E77E5;
@@ -26,6 +26,12 @@
 .btn.btn-custom
 {
     background-color: #5d33fb;
+    color: white;
+}
+
+.btn.btn-custom:hover
+{
+    background-color: #7b56ff;
     color: white;
 }
 

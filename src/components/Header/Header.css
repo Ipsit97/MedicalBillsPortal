@@ -50,8 +50,8 @@
 .custom-text-links .nav-link:hover,
 .custom-text-links .nav-link.active-style
 {
-  background-color: #ffffff;
-  color: black;
+  background-color: #5d33fb;
+  color: white;
   border-radius: 8px;
   padding: 12px 15px; 
 }

@@ -1,9 +1,12 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import {PersonFill,HouseDoorFill } from 'react-bootstrap-icons';
+import { useSelector  } from 'react-redux';
 import './Header.css';
 
 function Header() {
+  const activeAccountInfo = useSelector((state) => state.form.activeAccountInfo);
+
 
     return (
     <nav className="navbar navbar-expand-lg navbar-dark custom-container">
@@ -20,16 +23,29 @@ function Header() {
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav  ms-auto custom-text-links">
             <li className="nav-item">
-              <NavLink className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')} to="/home">
+              <NavLink 
+              className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')}
+              to="/home">
                <HouseDoorFill /> Home
               </NavLink>
             </li>  
 
-            <li className="nav-item">
-              <NavLink className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')} to="/login">
+            {activeAccountInfo === null && (<li className="nav-item">
+              <NavLink 
+              className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')} 
+              to="/signUp">
               <PersonFill /> Login/Signup
               </NavLink>
-            </li>
+            </li>)}
+
+            {activeAccountInfo !== null && (<li className="nav-item">
+              <NavLink
+              className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')} 
+              to="/signUp">
+              <PersonFill /> Sign Out
+              </NavLink>
+            </li>)}
+
           </ul>
         </div>
       </div>

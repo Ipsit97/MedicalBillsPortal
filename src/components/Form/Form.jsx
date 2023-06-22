@@ -17,9 +17,10 @@ function Form() {
     const navigateToForm = useNavigate();
     const dispatch = useDispatch();
     const activeEntryIndex = useSelector((state) => state.form.createEntryIndex);
-    const formEntries = useSelector((state) => state.form.formData);
-    const receivedFormData = formEntries[activeEntryIndex] !== null ? formEntries[activeEntryIndex] : {};
+    const activeAccountInfo = useSelector((state) => state.form.activeAccountInfo);
+    var formEntries = useSelector((state) => state.form.formData[activeAccountInfo]);
     const isEditVal = useSelector((state) => state.form.isEdit);
+    const receivedFormData = (formEntries === undefined || formEntries[activeEntryIndex] === undefined) ? {} : formEntries[activeEntryIndex];
     const today = new Date();
 
     function onChangeDate (calDate) {
@@ -40,17 +41,21 @@ function Form() {
         formData.file_name = file;
         delete formData.bill_photo;
 
+        if(formEntries === undefined)
+            formEntries = {};
+
         if(formEntries.length - 1 === activeEntryIndex)
         {
-            dispatch(updateFormData({activeEntryIndex,formData}));
+            dispatch(updateFormData({activeEntryIndex,formData, activeAccountInfo}));
         }
         else
         {
-            dispatch(addFormData(formData));
+            dispatch(addFormData({activeAccountInfo,formData}));
         }
         dispatch(setIsEdit(false));
         navigateToSummary('/summary');
     };
+
 
     const onEdit = () => {
         dispatch(setIsEdit(true));
@@ -58,7 +63,7 @@ function Form() {
       };
     
     const checkValReceivedData =() => {
-        if(receivedFormData !== undefined)
+        if(receivedFormData.dateofservice !== undefined)  
             return receivedFormData.dateofservice;
         return '';    
     }
@@ -78,7 +83,7 @@ function Form() {
 
 
   return (
-    <div className='d-flex justify-content-center'>   
+    <div className='d-flex justify-content-center custom-box'>   
 
         <form onSubmit={handleSubmit(onSubmit)}>
             
@@ -133,7 +138,7 @@ function Form() {
                     rules={{ required: true }} render={({ field }) => (
                     <> 
                     <input type="text" className="form-control" onClick={() => setShowCalendar(true)}
-                    value={dateOfService!=='' ? dateOfService : checkValReceivedData(receivedFormData)} 
+                    value={dateOfService!=="" ? dateOfService : checkValReceivedData(receivedFormData)} 
                     disabled ={!isEditVal}
                     onChange={field.onChange} readOnly />
                     {errors.dateofservice && <span style={{color:"red"}}>Date is required</span>}
