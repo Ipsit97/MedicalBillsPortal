@@ -8,10 +8,11 @@ function Home() {
 
     const navigateToForm = useNavigate();
     const dispatch = useDispatch();
-    const formEntries = useSelector((state) => state.form.formData);
+    const activeAccountInfo = useSelector((state) => state.form.activeAccountInfo);
+    var formEntries = useSelector((state) => state.form.formData[activeAccountInfo]);
 
     const onSubmit = () => {
-        dispatch(createEntryIndex());
+        dispatch(createEntryIndex(activeAccountInfo));
         dispatch(setIsEdit(true));
         navigateToForm('/form');
     };
@@ -19,7 +20,7 @@ function Home() {
 
     return (
         <div>
-
+         <div>   
             <div className="row">
                 <div className="col-lg-3 col-md-4 offset-lg-9 offset-md-8">
                     <button className="btn add-data-btn" onClick={onSubmit}>Add New Data</button>
@@ -27,7 +28,7 @@ function Home() {
             </div>
 
             <div className="row">
-            {formEntries.map((item, index) => (
+            {formEntries !== undefined && formEntries.map((item, index) => (
                 <div className=" col-lg-4 col-md-6 col-sm-12" key={index}>
                     <div className="box bg-white custom-box">
                         <div className="table-container">    
@@ -61,7 +62,7 @@ function Home() {
                 </div>
                 ))}
             </div>
-
+        </div>
         </div>
     );
 
