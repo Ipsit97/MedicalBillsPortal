@@ -7,14 +7,23 @@ import './Home.css';
 function Home() {
 
     const navigateToForm = useNavigate();
+    const navigateToSignUp = useNavigate();
     const dispatch = useDispatch();
     const activeAccountInfo = useSelector((state) => state.form.activeAccountInfo);
     var formEntries = useSelector((state) => state.form.formData[activeAccountInfo]);
 
     const onSubmit = () => {
-        dispatch(createEntryIndex(activeAccountInfo));
-        dispatch(setIsEdit(true));
-        navigateToForm('/form');
+        if(activeAccountInfo !== "")
+        {
+            dispatch(createEntryIndex(activeAccountInfo));
+            dispatch(setIsEdit(true));
+            navigateToForm('/form');
+        }
+        else
+        {
+            alert("Please Sign Up!");
+           navigateToSignUp('/signUp'); 
+        }
     };
 
 
