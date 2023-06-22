@@ -1,12 +1,17 @@
 import React from 'react';
 import { NavLink} from 'react-router-dom';
 import {PersonFill,HouseDoorFill } from 'react-bootstrap-icons';
-import { useSelector  } from 'react-redux';
+import { useDispatch, useSelector  } from 'react-redux';
+import {activeAccount} from '../../actions/actions';
 import './Header.css';
 
 function Header() {
   const activeAccountInfo = useSelector((state) => state.form.activeAccountInfo);
+  const dispatch = useDispatch();
 
+  const onHandleClick = (e) => {
+    dispatch(activeAccount(""));
+  }
 
     return (
     <nav className="navbar navbar-expand-lg navbar-dark custom-container">
@@ -22,13 +27,13 @@ function Header() {
 
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav  ms-auto custom-text-links">
-            <li className="nav-item">
+            {activeAccountInfo !== "" && <li className="nav-item">
               <NavLink 
               className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')}
               to="/home">
                <HouseDoorFill /> Home
               </NavLink>
-            </li>  
+            </li> } 
 
             {activeAccountInfo === null && (<li className="nav-item">
               <NavLink 
@@ -39,7 +44,7 @@ function Header() {
             </li>)}
 
             {activeAccountInfo !== null && (<li className="nav-item">
-              <NavLink
+              <NavLink onClick={onHandleClick} 
               className={(navData) => (navData.isActive ? "active-style nav-link" : 'nav-link none')} 
               to="/signUp">
               <PersonFill /> Sign Out

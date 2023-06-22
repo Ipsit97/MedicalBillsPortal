@@ -12,6 +12,7 @@ import 'react-calendar/dist/Calendar.css';
 function Form() {
     const { register, handleSubmit, formState: { errors }, control, setValue } = useForm();
     const navigateToSummary = useNavigate();
+    const navigateToSignUp = useNavigate();
     const [showCalendar, setShowCalendar] = useState(false);
     const [dateOfService, setDateOfService] = useState(''); 
     const navigateToForm = useNavigate();
@@ -35,31 +36,47 @@ function Form() {
         console.log('Form submitted!');
         console.log('Form data:', formData);
 
-        formData.dateofservice = new Date(formData.dateofservice).toLocaleDateString();
-
-        const file = formData.bill_photo[0].name;
-        formData.file_name = file;
-        delete formData.bill_photo;
-
-        if(formEntries === undefined)
-            formEntries = {};
-
-        if(formEntries.length - 1 === activeEntryIndex)
+        if(activeAccountInfo !== "")
         {
-            dispatch(updateFormData({activeEntryIndex,formData, activeAccountInfo}));
+            formData.dateofservice = new Date(formData.dateofservice).toLocaleDateString();
+
+            const file = formData.bill_photo[0].name;
+            formData.file_name = file;
+            delete formData.bill_photo;
+    
+            if(formEntries === undefined)
+                formEntries = {};
+    
+            if(formEntries.length - 1 === activeEntryIndex)
+            {
+                dispatch(updateFormData({activeEntryIndex,formData, activeAccountInfo}));
+            }
+            else
+            {
+                dispatch(addFormData({activeAccountInfo,formData}));
+            }
+            dispatch(setIsEdit(false));
+            navigateToSummary('/summary');
         }
         else
         {
-            dispatch(addFormData({activeAccountInfo,formData}));
+            alert("Please Sign Up!");
+            navigateToSignUp('/signUp'); 
         }
-        dispatch(setIsEdit(false));
-        navigateToSummary('/summary');
     };
 
 
     const onEdit = () => {
-        dispatch(setIsEdit(true));
-        navigateToForm(-1);
+        if(activeAccountInfo !== "")
+        {
+            dispatch(setIsEdit(true));
+            navigateToForm(-1);
+        }
+        else
+        {
+            alert("Please Sign Up!");
+            navigateToSignUp('/signUp'); 
+        }
       };
     
     const checkValReceivedData =() => {
